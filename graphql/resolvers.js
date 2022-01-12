@@ -1,30 +1,82 @@
-const { UserInputError } = require('apollo-server')
+const { UserInputError, AuthenticationError } = require('apollo-server')
 const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
+const { Op } = require('sequelize');
+const { JWT_SECRET } = require('../config/env.json')
 const { User } = require('../models');
 
 module.exports = {
   Query: {
-    getUsers: async () => {
+    getUsers: async (_, __, context) => {
       try {
-        const usersList = await User.findAll()
+        // client http headers: { Authorization: Bearer <token> }
+        // context.req.headers.authorization
+        let userObj
+        if (context.req && context.req.headers.authorization) {
+          const token = context.req.headers.authorization.split('Bearer ')[1]
+          jwt.verify(token, JWT_SECRET, (err, decode) => {
+            if (err) {
+              throw new AuthenticationError('token authentication failed')
+            }
+            // { username: 'xingchao', iat: 1641997161, exp: 1642000761 }
+            userObj = decode
+          })
+        }
+        const usersList = await User.findAll({
+          where: {
+            username: {
+              [Op.ne]: userObj.username // !== user
+            }
+          }
+        })
         return usersList
       } catch (err) {
         console.log('getUsers err', err);
         throw err
       }
     },
+    login: async (_, args) => {
+      const { username, password } = args
+      const error = {}
+      try {
+        const user = await User.findOne({
+          where: { username }
+        })
+        if (!user) {
+          error.username = 'user not found'
+          throw new UserInputError('user not found', { error })
+        }
+        const correctPassword = await bcrypt.compare(password, user.password)
+        if (!correctPassword) {
+          error.password = 'password is incorrect'
+          throw new AuthenticationError('password is incorrect', { error })
+        }
+        const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: 60 * 60 })
+        // const pattern = /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/
+        return {
+          ...user.toJSON(),
+          token,
+          createdAt: user.createdAt.toISOString()
+          // createdAt: user.createdAt.replace(pattern, '$1-$2-$3 $4:$5:$6')
+        }
+      } catch (err) {
+        console.log('login err', err)
+        throw err
+      }
+    }
   },
   Mutation: {
     register: async (__, args) => {
       let { username, email, password, confirmPassword } = args
       const error = {}
       try {
-        // 利用sequelize做输入值有效性check
+        // Use serialize to check the validity of the input value
         if (password !== confirmPassword) {
           error.confirmPassword = 'password must match'
           throw error
         }
-        // 由于利用sequelize做了字段的类型约束，校验用户信息是否在db中已经存在
+        // Because the type constraint of the field is made by sequencing, 
+        // it is verified whether the user information already exists in dB
         // hash password
         password = await bcrypt.hash(password, 10)
         const user = await User.create({
