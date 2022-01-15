@@ -15,7 +15,7 @@
     "nodemon": "^2.0.15"
   },
   "scripts": {
-    "dev": "nodemon index.js",
+    "dev": "nodemon index.js --ignore client/",
     "start": "node index.js"
   },
   "keywords": [],

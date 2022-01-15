@@ -1,0 +1,32 @@
+.register-app {
+  width: 100%;
+  height: 100%;
+  background-repeat:no-repeat ;
+  background-size: cover;
+  background-position: center;
+  .register-title {
+    text-align: center;
+  }
+  .user-input-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .form-block {
+      padding: 20px 0px;
+      width: 500px;
+      margin-top: 150px;
+      .ant-form-item-label > label {
+        color: #fafafa;
+      }
+      .tip {
+        margin-top: 10px;
+        color: #fafafa;
+        .link {
+          text-decoration: underline;
+          font-weight: 500;
+          color: #fafafa
+        }
+      }
+    }
+  }
+}
