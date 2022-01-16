@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Form, Input, Button, Checkbox, message } from 'antd';
 import { useWindowSize } from '../../utils/index'
+import { useAuthDispatch } from '../../utils/auth'
 import './index.scss';
 import Background from '../../images/chat.jpg';
 
@@ -19,11 +20,11 @@ const LOGIN_USER = gql`
 
 const Login = (props) => {
   const windowSize = useWindowSize()
+  const dispatch = useAuthDispatch()
   const [loginUser, { loading }] = useLazyQuery(LOGIN_USER, {
     onCompleted: (res) => {
       const { token } = res.login
-      // localStorage
-      localStorage.setItem('token', token)
+      dispatch({ type: 'LOGIN', payload: token })
       props.history.push('/')
     },
     onError: (err) => {
