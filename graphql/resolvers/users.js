@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const { Op } = require('sequelize');
 const { JWT_SECRET } = require('../../config/env.json')
-const { User } = require('../../models');
+const { User, Message } = require('../../models');
 
 module.exports = {
   Query: {
@@ -12,13 +12,33 @@ module.exports = {
         if (!userObj) {
           throw new AuthenticationError('token authentication failed')
         }
-        const usersList = await User.findAll({
+        let usersList = await User.findAll({
+          attributes: ['username', 'imageUrl', 'createdAt'],
           where: {
             username: {
               [Op.ne]: userObj.username // !== user
             }
           }
         })
+        const allUserMessageList = await Message.findAll({
+          where: {
+            [Op.or]: [
+              { from: userObj.username },
+              { to: userObj.username },
+            ]
+          },
+          order: [['createdAt', 'DESC']]
+        })
+        // add message on user
+        usersList = usersList.map((userInfo) => {
+          const { username } = userInfo
+          const latestMessage = allUserMessageList.find(({ from, to }) => {
+            return from === username || to === username
+          })
+          userInfo.latestMessage = latestMessage
+          return userInfo
+        })
+
         return usersList
       } catch (err) {
         console.log('getUsers err', err);

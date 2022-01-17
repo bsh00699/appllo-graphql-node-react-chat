@@ -5,6 +5,9 @@ module.exports = {
   Message: {
     createdAt: (_) => _.createdAt.toISOString()
   },
+  User: {
+    createdAt: (_) => _.createdAt.toISOString()
+  },
   Query: {
     ...userResolvers.Query,
     ...messageResolvers.Query
