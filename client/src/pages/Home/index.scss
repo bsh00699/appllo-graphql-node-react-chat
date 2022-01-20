@@ -4,29 +4,46 @@
   background-repeat: no-repeat ;
   background-size: cover;
   background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   .chat-box {
     display: flex;
     width: 1000px;
-    height: 800px;
+    height: 70%;
     .users-content {
       width: 300px;
-      border: 2px solid red;
+      background-color:#f7f7f9;
       .user-block {
-        .head-image {
-          border-radius: 50%;
-        }
-        .text {
-          // padding: 5px 0px 5px 0px;
-        }
+        background-color:#f7f7f9;
+        width: 300px;
+        // width: 60px;
+        height: 70px;
+        padding: 10px;
         display: flex;
-        border: 2px solid yellow;
-        background-color: sandybrown;
+        align-items: center;
+        .head-image {
+          border-radius: 10%;
+        }
+        .username-msg-tip {
+          padding: 0px 5px;
+          height: 50px;
+          .username {
+            color: #24180e;
+            // font-weight: 450;
+            font-size: medium;
+          }
+          .msg-tip {
+            margin-top: 2px;
+            font-size: small;
+            color: #767676;
+          }
+        }
       }
     }
     .messages-content {
       width: 700px;
-      border: 2px solid red;
-      background-color:pink;
+      background-color:#ffffff;
     }
   }
 }
