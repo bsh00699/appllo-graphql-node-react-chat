@@ -52,7 +52,7 @@ const Users = (props) => {
       const isSelected = selectedUser === username
       return (
         <div className='user-block' key={username}
-          style={isSelected ? { backgroundColor: '#ffffff' } : {}}
+          style={isSelected ? { backgroundColor: '#f5f5f5' } : {}}
           onClick={handleSelectUser(username)}>
           <Image className='head-image' src={imageUrl} width={50} height={50} style={{ objectFit: 'cover' }} />
           <div className='username-msg-tip'>

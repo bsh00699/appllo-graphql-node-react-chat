@@ -10,45 +10,20 @@ import Messages from './Messages'
 import './index.scss';
 import Background from '../../images/home.webp';
 
-const GET_USER = gql`
-  query getUsers {
-    getUsers {
-      username
-      imageUrl
-      createdAt
-      latestMessage {
-        uuid content from to createdAt
-      }
-    }
-  }
-`
-const GET_MESSAGES = gql`
-  query getMessage($from: String!) {
-    getMessage(from: $from) {
-      uuid content from to createdAt
-    }
-  }
-`
 
 const Home = () => {
-  const windowSize = useWindowSize()
-
+  const { width, height } = useWindowSize()
   return (
     <div className='home-app'
       style={{
-        height: windowSize.height,
-        width: windowSize.width,
+        height,
+        width,
         backgroundImage: `url(${Background})`
       }}
     >
       <div className='chat-box'>
         <Users />
         <Messages />
-        {/* <div className='messages-content'>
-          {
-
-          }
-        </div> */}
       </div>
     </div>
   )

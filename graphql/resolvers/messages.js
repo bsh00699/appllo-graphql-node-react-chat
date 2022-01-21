@@ -21,7 +21,7 @@ module.exports = {
             from: { [Op.in]: usernames },
             to: { [Op.in]: usernames }
           },
-          order: [['createdAt', 'DESC']]
+          order: [['createdAt', 'ASC']]
         })
         return messages
       } catch (err) {
