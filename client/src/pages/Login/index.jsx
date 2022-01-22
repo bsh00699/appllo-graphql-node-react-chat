@@ -14,6 +14,7 @@ const LOGIN_USER = gql`
       email
       createdAt
       token
+      imageUrl
     }
   }
 `
@@ -23,8 +24,7 @@ const Login = (props) => {
   const dispatch = useAuthDispatch()
   const [loginUser, { loading }] = useLazyQuery(LOGIN_USER, {
     onCompleted: (res) => {
-      const { token } = res.login
-      dispatch({ type: 'LOGIN', payload: token })
+      dispatch({ type: 'LOGIN', payload: res.login })
       props.history.push('/')
     },
     onError: (err) => {

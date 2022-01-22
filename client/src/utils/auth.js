@@ -19,12 +19,14 @@ if (token) {
 }
 
 const authReducer = (state, action) => {
+  const { token, imageUrl } = action.payload
   switch (action.type) {
     case 'LOGIN':
-      localStorage.setItem('token', action.payload)
+      localStorage.setItem('token', token)
       return {
         ...state,
-        user: action.payload
+        imageUrl,
+        user: jwtDecode(token)
       }
     case 'LOGOUT':
       localStorage.removeItem('token')

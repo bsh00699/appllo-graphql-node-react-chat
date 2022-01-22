@@ -1,5 +1,5 @@
-import { gql, useLazyQuery, useQuery } from '@apollo/client';
-import React, { useCallback, useEffect, useState } from 'react';
+import { gql, useQuery } from '@apollo/client';
+import React, { useCallback } from 'react';
 import { Image, message } from 'antd';
 import { useMessageState, useMessageDispatch } from '../../ctx/message'
 import './index.scss';
@@ -35,9 +35,13 @@ const Users = (props) => {
     }
   })
 
-  const handleSelectUser = useCallback((username) => {
+  const handleSelectUser = useCallback((username, imageUrl) => {
     return () => {
-      dispatch({ type: 'SET_SELECTED_USER', payload: username })
+      dispatch({
+        type: 'SET_SELECTED_USER', payload: {
+          username, imageUrl
+        }
+      })
     }
   }, [])
 
@@ -49,11 +53,11 @@ const Users = (props) => {
   } else if (users.length > 0) {
     userList = users.map((user, index) => {
       const { username, imageUrl, latestMessage = null } = user
-      const isSelected = selectedUser === username
+      const isSelected = selectedUser?.username === username
       return (
         <div className='user-block' key={username}
           style={isSelected ? { backgroundColor: '#f5f5f5' } : {}}
-          onClick={handleSelectUser(username)}>
+          onClick={handleSelectUser(username, imageUrl)}>
           <Image className='head-image' src={imageUrl} width={50} height={50} style={{ objectFit: 'cover' }} />
           <div className='username-msg-tip'>
             <div className='username'>{username}</div>

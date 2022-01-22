@@ -5,7 +5,6 @@ import { useAuthState } from './auth'
 const DynamicRouter = (props) => {
   const { component, authenticated, guest } = props
   const { user } = useAuthState()
-  console.log('user===', user);
   if (authenticated && !user) {
     return <Redirect to='/login' />
   } else if (guest && user) {

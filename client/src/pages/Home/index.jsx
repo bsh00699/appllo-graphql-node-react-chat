@@ -1,6 +1,6 @@
 import { gql, useLazyQuery, useQuery } from '@apollo/client';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Row, Col, Form, Input, Image, Button, Checkbox } from 'antd';
+import { Input, Image, Button, Checkbox } from 'antd';
 import { Link } from 'react-router-dom'
 import { useWindowSize } from '../../utils/index'
 import { useAuthDispatch } from '../../utils/auth'

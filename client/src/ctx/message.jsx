@@ -27,7 +27,10 @@ const messageReducer = (state, action) => {
 
 const MessageProvider = ({ children }) => {
   const [state, dispatch] = useReducer(messageReducer, {
-    users: null
+    users: null,
+    selectedUser: null,
+    selectedUserMsg: null,
+    messages: null
   })
   return (
     <MessageDispatchContext.Provider value={dispatch}>

@@ -53,19 +53,37 @@
       // width: 800px;
       background-color:#f7f7f9;
       padding: 10px 10px 0px 10px;
-      .msg-details {
-        display: flex;
-        .msg-row {
-          padding: 8px 10px;
-          margin: 5px;
-          border-radius: 5px;
-          // .ant-tooltip-open {
-          //   background-color:#f7f7f9;
-          //   color: #767676;
-          //   background-color: red;
-          // }
+      .select-user-tip {
+        margin-top: 5px;
+        text-align: center;
+        font-size: small;
+        color: #bfbfbf;
+      }
+      .msg-display-area {
+        height: 70%;
+        overflow-y: scroll;
+        &::-webkit-scrollbar {
+          display: none;
         }
-   
+        .msg-details {
+          display: flex;
+          .user-image {
+            display: flex;
+            align-items: center;
+            .img {
+              border-radius: 10%;
+            }
+          }
+          .msg-row {
+            padding: 10px 10px;
+            margin: 5px;
+            border-radius: 5px;
+          }
+        }
+      }
+      .input-msg {
+        border-top:1px solid #d9d9d9;
+        padding: 5px 0px;
       }
     }
   }
