@@ -3,6 +3,7 @@ import React from 'react';
 import moment from 'moment'
 import { useMessageState } from '../../ctx/message'
 import { useAuthState } from '../../utils/auth'
+import gravatar from '../../images/gravatar.png';
 
 
 
@@ -48,7 +49,7 @@ const MessageDetails = (props) => {
       }>
         {content}
       </div>
-      { sendUser ? <UserImage imageUrl={hostImageUrl} /> : null}
+      { sendUser ? <UserImage imageUrl={hostImageUrl || gravatar} /> : null}
       {/* </Tooltip> */}
     </div>
   )

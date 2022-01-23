@@ -1,10 +1,18 @@
 import { gql, useLazyQuery, useMutation } from '@apollo/client';
+import { createFromIconfontCN } from '@ant-design/icons';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Form, Input, Button, Checkbox, message } from 'antd';
+import { Form, Input, Button, Checkbox, message, Popconfirm } from 'antd';
 import { useMessageState, useMessageDispatch } from '../../ctx/message'
+import { useAuthState } from '../../utils/auth'
 import MessageDetails from './MessageDetails'
 import './index.scss';
 import { useWindowSize } from '../../utils/index'
+
+
+
+const IconFont = createFromIconfontCN({
+  scriptUrl: '//at.alicdn.com/t/font_8d5l8fzk5b87iudi.js',
+});
 
 const { TextArea } = Input;
 
@@ -28,6 +36,7 @@ const Messages = (props) => {
   const { width, height } = useWindowSize()
   const dispatch = useMessageDispatch()
   const { users, selectedUser, selectedUserMsg } = useMessageState()
+  const { user: loginUser } = useAuthState()
   const [content, setContent] = useState('')
   const inputRef = React.useRef(null);
 
@@ -106,6 +115,20 @@ const Messages = (props) => {
 
   return (
     <div className='messages-content' style={{ width: `${Math.floor(width * 0.55)}px` }}>
+      <div className='header'>
+        <div className='username'>{loginUser?.username}</div>
+        <Popconfirm
+          placement="bottomRight"
+          title={'logout'}
+          icon={<IconFont type="icon-tuichu" />}
+          showCancel={false}
+          showOkText={false}
+        // onConfirm={confirm}
+        >
+          <div className='setting'>...</div>
+        </Popconfirm>
+
+      </div>
       <div className='msg-display-area'>
         {
           loading

@@ -52,16 +52,35 @@
       border-top-right-radius: 5px;
       // width: 800px;
       background-color:#f7f7f9;
-      padding: 10px 10px 0px 10px;
       .select-user-tip {
         margin-top: 5px;
         text-align: center;
         font-size: small;
         color: #bfbfbf;
       }
+      .header {
+        height: 35px;
+        line-height: 30px;
+        border-bottom:1px solid #d9d9d9;
+        display: flex;
+        justify-content: space-between;
+        .username {
+          margin-left: 5px;
+          font-weight: 500;
+        }
+        .setting {
+          line-height: 20px;
+          margin-right: 10px;
+          font-weight: bolder;
+          font-size: x-large;
+        }
+      }
       .msg-display-area {
+        padding: 0px 10px 0px 10px;
         height: 70%;
         overflow-y: scroll;
+        display: flex;
+        flex-direction: column-reverse;
         &::-webkit-scrollbar {
           display: none;
         }
@@ -75,8 +94,8 @@
             }
           }
           .msg-row {
-            padding: 10px 10px;
-            margin: 5px;
+            padding: 8px 10px;
+            margin: 10px;
             border-radius: 5px;
           }
         }
