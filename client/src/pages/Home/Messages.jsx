@@ -1,9 +1,9 @@
 import { gql, useLazyQuery, useMutation } from '@apollo/client';
-import { createFromIconfontCN } from '@ant-design/icons';
+import { createFromIconfontCN, FormOutlined } from '@ant-design/icons';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Form, Input, Button, Checkbox, message, Popconfirm } from 'antd';
+import { Form, Input, Button, Drawer, message, Popconfirm } from 'antd';
 import { useMessageState, useMessageDispatch } from '../../ctx/message'
-import { useAuthState } from '../../utils/auth'
+import { useAuthState, useAuthDispatch } from '../../utils/auth'
 import MessageDetails from './MessageDetails'
 import './index.scss';
 import { useWindowSize } from '../../utils/index'
@@ -12,7 +12,33 @@ import { useWindowSize } from '../../utils/index'
 
 const IconFont = createFromIconfontCN({
   scriptUrl: '//at.alicdn.com/t/font_8d5l8fzk5b87iudi.js',
-});
+})
+
+
+const SettingOpt = () => {
+  const dispatch = useAuthDispatch()
+
+  const logout = useCallback(() => {
+    dispatch({ type: 'LOGOUT' })
+    window.location.href = '/login'
+  }, [])
+
+  return (
+    <div>
+      <div className='logout' style={{ fontSize: 14, cursor: 'pointer' }} onClick={logout}>退出登录</div>
+      {/* <div style={{ fontSize: 14 }}>编辑头像</div> */}
+    </div>
+  )
+}
+
+const SettingIcon = () => {
+  return (
+    <>
+      <IconFont type="icon-tuichu" style={{ color: '#5d5d5d', cursor: 'pointer' }} />
+      {/* <FormOutlined style={{ color: '#5d5d5d', marginTop: 25 }} /> */}
+    </>
+  )
+}
 
 const { TextArea } = Input;
 
@@ -116,18 +142,15 @@ const Messages = (props) => {
   return (
     <div className='messages-content' style={{ width: `${Math.floor(width * 0.55)}px` }}>
       <div className='header'>
-        <div className='username'>{loginUser?.username}</div>
+        <div className='username'>{selectedUser?.username}</div>
         <Popconfirm
           placement="bottomRight"
-          title={'logout'}
-          icon={<IconFont type="icon-tuichu" />}
+          title={<SettingOpt />}
+          // icon={<SettingIcon />}
           showCancel={false}
-          showOkText={false}
-        // onConfirm={confirm}
         >
           <div className='setting'>...</div>
         </Popconfirm>
-
       </div>
       <div className='msg-display-area'>
         {

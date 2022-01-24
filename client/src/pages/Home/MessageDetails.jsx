@@ -1,6 +1,6 @@
 import { Tooltip, Image } from 'antd';
 import React from 'react';
-import moment from 'moment'
+// import moment from 'moment'
 import { useMessageState } from '../../ctx/message'
 import { useAuthState } from '../../utils/auth'
 import gravatar from '../../images/gravatar.png';
@@ -32,7 +32,7 @@ const UserImage = (props) => {
 }
 
 const MessageDetails = (props) => {
-  const { user, imageUrl: hostImageUrl } = useAuthState()
+  const { user } = useAuthState()
   const { selectedUser } = useMessageState()
   const { message } = props
   const { from, content, createdAt } = message
@@ -49,7 +49,7 @@ const MessageDetails = (props) => {
       }>
         {content}
       </div>
-      { sendUser ? <UserImage imageUrl={hostImageUrl || gravatar} /> : null}
+      { sendUser ? <UserImage imageUrl={user.imageUrl || gravatar} /> : null}
       {/* </Tooltip> */}
     </div>
   )

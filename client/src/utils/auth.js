@@ -6,6 +6,7 @@ const AuthDispatchContext = createContext()
 
 let user = null
 const token = localStorage.getItem('token')
+const gravatar = localStorage.getItem('gravatar')
 if (token) {
   const decodeToken = jwtDecode(token)
   const { username, exp } = decodeToken
@@ -17,19 +18,25 @@ if (token) {
     user = decodeToken
   }
 }
+if (gravatar) {
+  user.imageUrl = gravatar
+}
 
 const authReducer = (state, action) => {
-  const { token, imageUrl } = action.payload
   switch (action.type) {
     case 'LOGIN':
+      const { token, imageUrl } = action.payload
       localStorage.setItem('token', token)
+      localStorage.setItem('gravatar', imageUrl)
+      const userTemp = jwtDecode(token)
+      userTemp.imageUrl = imageUrl
       return {
         ...state,
-        imageUrl,
-        user: jwtDecode(token)
+        user: userTemp
       }
     case 'LOGOUT':
       localStorage.removeItem('token')
+      localStorage.removeItem('gravatar')
       return {
         ...state,
         user: null
