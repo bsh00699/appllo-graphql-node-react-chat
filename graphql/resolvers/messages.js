@@ -1,4 +1,4 @@
-const { UserInputError, AuthenticationError } = require('apollo-server')
+const { UserInputError, AuthenticationError, withFilter } = require('apollo-server')
 const { Op } = require('sequelize');
 const { Message, User } = require('../../models');
 
@@ -30,7 +30,7 @@ module.exports = {
     }
   },
   Mutation: {
-    sendMessage: async (_, args, { user }) => {
+    sendMessage: async (_, args, { user, pubsub }) => {
       const { to, content } = args
       try {
         if (!user) throw new AuthenticationError('token authentication failed')
@@ -48,11 +48,30 @@ module.exports = {
           to,
           content
         })
-
+        pubsub.publish('NEW_MESSAGE', {
+          newMessage: message
+        })
         return message
       } catch (err) {
         throw err
       }
+    }
+  },
+  Subscription: {
+    newMessage: {
+      subscribe: withFilter(
+        (_, __, { user, pubsub }) => {
+          if (!user) throw new AuthenticationError('token authentication failed')
+          return pubsub.asyncIterator(['NEW_MESSAGE'])
+        },
+        (parent, _, { user }) => {
+          // only sender and receiver can receive
+          const { newMessage } = parent
+          const { username } = user
+          if (newMessage.from === username || newMessage.to === username) return true
+          return false
+        }
+      )
     }
   }
 }

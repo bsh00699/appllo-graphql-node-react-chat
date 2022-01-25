@@ -4,7 +4,7 @@ module.exports = gql`
 type User {
   username: String!
   createdAt: String!
-  imageUrl: String!
+  imageUrl: String
   email: String
   token: String
   latestMessage: Message
@@ -34,5 +34,9 @@ type Mutation {
     to: String!
     content: String!
   ): Message
+}
+
+type Subscription {
+  newMessage: Message!
 }
 `;
