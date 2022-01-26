@@ -18,7 +18,7 @@ if (token) {
     user = decodeToken
   }
 }
-if (gravatar) {
+if (gravatar && user) {
   user.imageUrl = gravatar
 }
 

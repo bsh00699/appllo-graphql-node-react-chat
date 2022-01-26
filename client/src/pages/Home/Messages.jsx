@@ -8,7 +8,23 @@ import MessageDetails from './MessageDetails'
 import './index.scss';
 import { useWindowSize } from '../../utils/index'
 
+const { TextArea } = Input;
 
+const GET_MESSAGES = gql`
+  query getMessage($from: String!) {
+    getMessage(from: $from) {
+      uuid content from to createdAt
+    }
+  }
+`
+
+const SEND_MESSAGES = gql`
+  mutation sendMessage($to: String! $content: String!) {
+    sendMessage(to: $to content: $content) {
+      uuid content from to createdAt
+    }
+  }
+`
 
 const IconFont = createFromIconfontCN({
   scriptUrl: '//at.alicdn.com/t/font_8d5l8fzk5b87iudi.js',
@@ -40,29 +56,10 @@ const SettingIcon = () => {
   )
 }
 
-const { TextArea } = Input;
-
-const GET_MESSAGES = gql`
-  query getMessage($from: String!) {
-    getMessage(from: $from) {
-      uuid content from to createdAt
-    }
-  }
-`
-
-const SEND_MESSAGES = gql`
-  mutation sendMessage($to: String! $content: String!) {
-    sendMessage(to: $to content: $content) {
-      uuid content from to createdAt
-    }
-  }
-`
-
 const Messages = (props) => {
   const { width, height } = useWindowSize()
   const dispatch = useMessageDispatch()
   const { users, selectedUser, selectedUserMsg } = useMessageState()
-  const { user: loginUser } = useAuthState()
   const [content, setContent] = useState('')
   const inputRef = React.useRef(null);
 
@@ -84,12 +81,8 @@ const Messages = (props) => {
 
   const [sendMessage, { loading: sendMsgLoading }] = useMutation(SEND_MESSAGES, {
     onCompleted: (res) => {
-      setContent('')
-      getMessage({
-        variables: {
-          from: selectedUser.username
-        }
-      })
+      // Depends on publish subscribe，cancel here
+      // dispatch({ type: 'ADD_MESSAGE', payload: res.sendMessage })
     },
     onError: (err) => {
       const content = JSON.stringify(err.graphQLErrors[0].extensions.error)
@@ -131,6 +124,7 @@ const Messages = (props) => {
       setContent('')
       return
     }
+    setContent('')
     sendMessage({
       variables: {
         to: selectedUser?.username,

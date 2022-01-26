@@ -25,7 +25,9 @@ const Login = (props) => {
   const [loginUser, { loading }] = useLazyQuery(LOGIN_USER, {
     onCompleted: (res) => {
       dispatch({ type: 'LOGIN', payload: res.login })
-      props.history.push('/')
+      // refresh token
+      window.location.href = '/'
+      // props.history.push('/')
     },
     onError: (err) => {
       const content = JSON.stringify(err.graphQLErrors[0].extensions.error)

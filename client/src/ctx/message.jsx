@@ -20,6 +20,25 @@ const messageReducer = (state, action) => {
         ...state,
         selectedUserMsg: action.payload
       }
+    case 'ADD_MESSAGE':
+      const { message, selectedUser } = action.payload
+      const prevMsgList = state.selectedUserMsg
+      const users = state.users
+      // 1.update selected user latestMessage
+      // 2.update selectedUserMsg
+      const usersTemp = users.reduce((prev, curr) => {
+        let { username, imageUrl, latestMessage } = curr
+        if (selectedUser === username) latestMessage = message
+        return [
+          ...prev,
+          { username, imageUrl, latestMessage }
+        ]
+      }, [])
+      return {
+        ...state,
+        selectedUserMsg: [message, ...prevMsgList],
+        users: usersTemp
+      }
     default:
       throw new Error(`unknown action type: ${action.type}`)
   }
@@ -27,10 +46,9 @@ const messageReducer = (state, action) => {
 
 const MessageProvider = ({ children }) => {
   const [state, dispatch] = useReducer(messageReducer, {
-    users: null,
+    users: [],
     selectedUser: null,
-    selectedUserMsg: null,
-    messages: null
+    selectedUserMsg: []
   })
   return (
     <MessageDispatchContext.Provider value={dispatch}>
