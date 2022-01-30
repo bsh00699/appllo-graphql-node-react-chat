@@ -1,4 +1,4 @@
-const { PubSub } = require('apollo-server')
+const { PubSub } = require('apollo-server-express')
 const jwt = require('jsonwebtoken')
 const { JWT_SECRET } = require('../config/env.json')
 const pubsub = new PubSub()

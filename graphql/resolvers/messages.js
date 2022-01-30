@@ -1,4 +1,4 @@
-const { UserInputError, AuthenticationError, withFilter } = require('apollo-server')
+const { UserInputError, AuthenticationError, withFilter } = require('apollo-server-express')
 const { Op } = require('sequelize');
 const { Message, User } = require('../../models');
 
