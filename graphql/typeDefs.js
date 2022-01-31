@@ -16,6 +16,11 @@ type Message {
   from: String!
   createdAt: String!
 }
+type File {
+  filename: String!
+  mimetype: String!
+  encoding: String!
+}
 
 type Query {
   getUsers: [User]!
@@ -34,6 +39,7 @@ type Mutation {
     to: String!
     content: String!
   ): Message
+  uploadFile (file: Upload!): String!
 }
 
 type Subscription {

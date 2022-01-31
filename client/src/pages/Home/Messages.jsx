@@ -1,9 +1,9 @@
 import { gql, useLazyQuery, useMutation } from '@apollo/client';
-import { createFromIconfontCN, FormOutlined } from '@ant-design/icons';
+import { createFromIconfontCN, EditOutlined } from '@ant-design/icons';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Form, Input, Button, Drawer, message, Popconfirm } from 'antd';
+import { Input, message, Popover } from 'antd';
 import { useMessageState, useMessageDispatch } from '../../ctx/message'
-import { useAuthState, useAuthDispatch } from '../../utils/auth'
+import { useAuthDispatch } from '../../utils/auth'
 import MessageDetails from './MessageDetails'
 import './index.scss';
 import { useWindowSize } from '../../utils/index'
@@ -41,8 +41,14 @@ const SettingOpt = () => {
 
   return (
     <div>
-      <div className='logout' style={{ fontSize: 14, cursor: 'pointer' }} onClick={logout}>退出登录</div>
-      {/* <div style={{ fontSize: 14 }}>编辑头像</div> */}
+      <div className='logout' onClick={logout}>
+        <IconFont type="icon-tuichu" style={{ marginRight: 5 }} />
+        退出登录
+      </div>
+      <div className='edit-head-img'>
+        <EditOutlined style={{ marginRight: 5 }} />
+        编辑头像
+      </div>
     </div>
   )
 }
@@ -137,14 +143,12 @@ const Messages = (props) => {
     <div className='messages-content' style={{ width: `${Math.floor(width * 0.55)}px` }}>
       <div className='header'>
         <div className='username'>{selectedUser?.username}</div>
-        <Popconfirm
-          placement="bottomRight"
-          title={<SettingOpt />}
-          // icon={<SettingIcon />}
-          showCancel={false}
+        <Popover content={<SettingOpt />}
+          title="个人中心" trigger="click" placement="bottomRight"
+          style={{ width: 100 }}
         >
           <div className='setting'>...</div>
-        </Popconfirm>
+        </Popover>
       </div>
       <div className='msg-display-area'>
         {

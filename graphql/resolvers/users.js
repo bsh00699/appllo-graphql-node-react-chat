@@ -1,7 +1,9 @@
 const { UserInputError, AuthenticationError } = require('apollo-server-express')
 const bcrypt = require('bcryptjs')
+const fs = require('fs')
 const jwt = require('jsonwebtoken')
-const { Op } = require('sequelize');
+const path = require('path')
+const { Op, UUID } = require('sequelize');
 const { JWT_SECRET } = require('../../config/env.json')
 const { User, Message } = require('../../models');
 
@@ -103,6 +105,23 @@ module.exports = {
           errors.forEach(({ path, message }) => (error[path] = `${path} already exists`));
         }
         throw new UserInputError('err input', { error })
+      }
+    },
+    uploadFile: async (_, { file }) => {
+      try {
+        const { createReadStream, filename } = await file;
+        const localFilename = UUID() + path.extname(filename);
+        const filePath = `../../public/upload/${localFilename}`
+        const writable = fs.createWriteStream(filePath)
+        await new Promise((resolve, reject) =>
+          createReadStream()
+            .pipe(writable)
+            .on('error', err => reject(err))
+            .on('close', resolve)
+        );
+        return filePath
+      } catch (err) {
+        console.log('err', err);
       }
     }
   }

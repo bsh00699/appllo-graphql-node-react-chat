@@ -11,6 +11,7 @@ const messageReducer = (state, action) => {
         users: action.payload
       }
     case 'SET_SELECTED_USER':
+      localStorage.setItem('selectedUser', JSON.stringify(action.payload))
       return {
         ...state,
         selectedUser: action.payload
@@ -47,7 +48,7 @@ const messageReducer = (state, action) => {
 const MessageProvider = ({ children }) => {
   const [state, dispatch] = useReducer(messageReducer, {
     users: [],
-    selectedUser: null,
+    selectedUser: JSON.parse(localStorage.getItem('selectedUser')) || null,
     selectedUserMsg: []
   })
   return (

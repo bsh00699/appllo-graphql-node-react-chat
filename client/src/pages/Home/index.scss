@@ -107,9 +107,31 @@
     }
   }
 }
+.logout {
+  padding: 8px 0px;
+  font-size: 13px;
+  cursor: pointer;
+  &:hover {
+    background-color:#f6f7fb;
+  }
+}
+.edit-head-img {
+  padding: 8px 0px;
+  font-size: 13px;
+  cursor: pointer;
+  &:hover {
+    background-color:#f6f7fb;
+  }
+}
+ 
 
 // global 
-// 气泡确认框-Popconfirm
-.ant-popover-buttons {
-  display: none;
+// 气泡框-Popover
+.ant-popover-content {
+  width: 120px;
+  .ant-popover-inner-content {
+    padding: 0px 0px;
+    color: rgba(0, 0, 0, 0.85);
+    text-align: center;
+  }
 }
