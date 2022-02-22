@@ -15,8 +15,8 @@ Apollo Server 是一个开源的、符合规范的 GraphQL 服务器,它兼容�
 
 ### 技术栈
 #### 服务端
-* Apollo-server + nodejs + express + mysql
-* SQL构建器使用应用广泛的ORM框架sequelize
+* Apollo-server + nodejs + express
+* sequelize + mysql
 #### 客户端
 * react-app框架
 * ant.design组件库
@@ -24,10 +24,13 @@ Apollo Server 是一个开源的、符合规范的 GraphQL 服务器,它兼容�
 * apollo-client全局管理state
 
 ### 运行
+#### 服务端
 ```
 npm install
 npm run dev
-
+```
+#### 客户端
+```
 cd client
 npm install
 npm start
@@ -37,4 +40,7 @@ npm start
 ![register](https://github.com/bsh00699/appllo-graphql-node-react-chat/blob/master/previewImg/register.png)
 ![home](https://github.com/bsh00699/appllo-graphql-node-react-chat/blob/master/previewImg/home.png)
 
-
+### 参考
+* [apollo官方文档](https://www.apollographql.com/docs/)
+* [sequelize官方文档](https://www.sequelize.com.cn/core-concepts/model-basics)
+* [antDesign在create-react-app中使用](https://ant.design/docs/react/use-with-create-react-app-cn)
