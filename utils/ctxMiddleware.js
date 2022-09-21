@@ -1,6 +1,5 @@
 const { PubSub } = require('apollo-server-express')
 const jwt = require('jsonwebtoken')
-const { JWT_SECRET } = require('../config/env.json')
 const pubsub = new PubSub()
 
 module.exports = (ctx) => {
@@ -15,7 +14,7 @@ module.exports = (ctx) => {
     token = ctx.connection?.context.Authorization.split('Bearer ')[1]
   }
   if (token) {
-    jwt.verify(token, JWT_SECRET, (err, decode) => {
+    jwt.verify(token, process.env.JWT_SECRET, (err, decode) => {
       // decode: { username: 'xingchao', iat: 1641997161, exp: 1642000761 }
       ctx.user = decode
     })

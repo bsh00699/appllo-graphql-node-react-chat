@@ -1,7 +1,7 @@
 import { gql, useLazyQuery, useMutation } from '@apollo/client';
 import { createFromIconfontCN, EditOutlined } from '@ant-design/icons';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Input, message, Popover } from 'antd';
+import { Input, message, Popover, Upload } from 'antd';
 import { useMessageState, useMessageDispatch } from '../../ctx/message'
 import { useAuthDispatch } from '../../utils/auth'
 import MessageDetails from './MessageDetails'
@@ -39,6 +39,25 @@ const SettingOpt = () => {
     window.location.href = '/login'
   }, [])
 
+  const props = {
+    name: 'file',
+    // action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+    // headers: {
+    //   authorization: 'authorization-text',
+    // },
+    showUploadList: false,
+    onChange(info) {
+      if (info.file.status !== 'uploading') {
+        // console.log(info.file, info.fileList);
+      }
+      if (info.file.status === 'done') {
+        message.success(`${info.file.name} file uploaded successfully`);
+      } else if (info.file.status === 'error') {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+  };
+
   return (
     <div>
       <div className='logout' onClick={logout}>
@@ -46,8 +65,10 @@ const SettingOpt = () => {
         退出登录
       </div>
       <div className='edit-head-img'>
-        <EditOutlined style={{ marginRight: 5 }} />
-        编辑头像
+        <Upload {...props}>
+          <EditOutlined style={{ marginRight: 5 }} />
+          编辑头像
+        </Upload>
       </div>
     </div>
   )
@@ -144,7 +165,7 @@ const Messages = (props) => {
       <div className='header'>
         <div className='username'>{selectedUser?.username}</div>
         <Popover content={<SettingOpt />}
-          title="个人中心" trigger="click" placement="bottomRight"
+          title="" trigger="click" placement="bottomRight"
           style={{ width: 100 }}
         >
           <div className='setting'>...</div>

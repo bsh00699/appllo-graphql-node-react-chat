@@ -4,7 +4,6 @@ const fs = require('fs')
 const jwt = require('jsonwebtoken')
 const path = require('path')
 const { Op, UUID } = require('sequelize');
-const { JWT_SECRET } = require('../../config/env.json')
 const { User, Message } = require('../../models');
 
 module.exports = {
@@ -63,7 +62,7 @@ module.exports = {
           error.password = 'password is incorrect'
           throw new AuthenticationError('password is incorrect', { error })
         }
-        const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: 60 * 60 })
+        const token = jwt.sign({ username }, process.env.JWT_SECRET, { expiresIn: 60 * 60 })
         // const pattern = /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/
         return {
           ...user.toJSON(),
